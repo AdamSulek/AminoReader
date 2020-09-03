@@ -1,0 +1,11 @@
+aminoacid_one_character.txt:
+    mass: 199034.72
+    iso: 8.57
+
+aminoacid_three_character.txt:
+    mass: 1257.62
+    iso: 12.48
+
+codon_notation.txt:
+    mass: 4041.9
+    iso: 9.36 
