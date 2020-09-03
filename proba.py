@@ -9,26 +9,14 @@ def cutter(file):
                 AGG|AAT|AAC|GAT|GAC|TGT|TGC|CAA|CAG|GAA|GAG|GAA|GTA| \
                 GAG|GGT|GGC|GGA|GGG|CAT|CAC|ATT|ATC|ATA|CTT|CTC|GTG| \
                 CTA|CTG|TTA|TTG|AAG|ATG|TTT|TTC|CCT|CCC|CCA|CCG| \
-                TCT|TCC|TCA|TCG|AGT|AGC|ACT|ACC|ACA|ACG|TGG|TAT|)'
-
+                TCT|TCC|TCA|TCG|AGT|AGC|ACT|ACC|ACA|ACG|TGG|TAT|TAA)'
     result = ""
-    codon = ""
-    # for letter in seq:
     with open(file, 'r') as stream:
-        for index, line_val in enumerate(stream.readlines()):
-            print("index: {}".format(index))
-            print("line_val: {}".format(line_val))
-            # if re.match(pattern, line_val):
-            #     print(line_val)
-        # codon += letter
-        # if len(codon) == 3:
-        #     for letter in combination:
-        #         if codon == letter:
-        #             self.result += codon
-        #     codon = ""
+        for line in stream.readlines():
+            for word in line.split():
+                if re.match(pattern, word):
+                    result += word
     return result
-
-
 
 if __name__ == "__main__":
     # tekst = " Alignment: C:\Users\PostDoc\Desktop\subcloning (1).txt \
@@ -36,8 +24,10 @@ if __name__ == "__main__":
     #           CAAGGAGATG GCGCCCAACA GTCCCCCGGC CACGGGGCCT GCCACCATAC CCACGCCGAA"
     file = "codon_notation.txt"
     print(cutter(file))
-    pattern = '(AAA|GCT)'
-    lista = ["AAA", "GCT", "GTC", "CAA"]
-    for i in lista:
-        if re.match(pattern, i):
-            print("chuj")
+    # pattern = '(AAA|GCT)'
+    # # pattern = '[ACTG]'
+    # lista = ["AAA", "GCT", "GTC", "CAA", "nic", "A", "Adam"]
+    # for i in lista:
+    #     if re.match(pattern, i):
+    #         if re.match('[A-Z]+', i):
+    #             print(i)
