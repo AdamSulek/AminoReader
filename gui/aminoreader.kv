@@ -9,55 +9,62 @@
     from_codon: from_codon
     from_amino: from_amino
 
-    GridLayout:
-        cols: 1
-        size: root.width, root.height
+    BoxLayout:
+        orientation: "vertical"
 
-        Label:
-            text: "Welcome in AminoReader"
-            bold: True
-            size_hint: 0.5, 0.2
-            font_size: 30
+        BoxLayout:
+            size_hint: 1, .05
 
-        GridLayout:
-            cols: 2
+            Label:
+                text: "Welcome in AminoReader"
+                bold: True
+                size_hint: 0.5, 0.2
+                font_size: 30
+
+        BoxLayout:
+            size_hint: 1, .2
 
             Label:
                 text: "choose a file from codon notation (also row file)"
-                size_hint: 0.5, 0.2
+                size_hint: 0.5, 0.3
                 font_size: 20
 
             Button:
                 id: from_codon
-                size_hint: 0.2, 0.1
+                size_hint: 0.2, 0.4
                 font_size: 20
                 text: "From Codon"
                 on_release:
                     app.root.current = "codon"
                     root.manager.transition.direction = "left"
 
+        BoxLayout:
+            size_hint: 1, .2
+
             Label:
                 text: "choose a file from aminoacid one character notation "
-                size_hint: 0.5, 0.2
+                size_hint: 0.5, 0.3
                 font_size: 20
 
             Button:
                 id: from_amino
-                size_hint: 0.2, 0.1
+                size_hint: 0.2, 0.4
                 font_size: 20
                 text: "From Aminoacid"
                 on_release:
                     app.root.current = "amino_one"
                     root.manager.transition.direction = "left"
+        BoxLayout:
+            size_hint: 1, .2
 
             Label:
                 text: "choose a file from aminoacid three character notation "
-                size_hint: 0.5, 0.2
+                size_hint: 0.5, 0.3
                 font_size: 20
 
             Button:
                 id: from_amino
-                size_hint: 0.2, 0.1
+                size_hint: 0.2, 0.4
                 font_size: 20
                 text: "From Aminoacid"
                 on_release:
@@ -107,6 +114,18 @@
                 on_release: root.calculate_isoValue()
 
         BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Label:
+                text: 'codon sequence: '
+                font_size: 20
+
+            Label:
+                text: 'aminoacids sequence: '
+                font_size: 20
+
+        BoxLayout:
             TextInput:
                 id: codon_input
                 text: ''
@@ -117,19 +136,35 @@
 
 <LoadDialog>:
 
-    FloatLayout:
+    BoxLayout:
+        orientation: 'vertical'
 
-        FileChooserListView:
-            id: filechooser
-            pos_hint:{"right": 0.9, "top":1}
-            size_hint: 0.7, 0.9
-            on_selection: root.load(filechooser.path, filechooser.selection)
+        BoxLayout:
+            size_hint: 1, 0.8
 
-        Button:
-            pos_hint:{"left": 0.9, "top":0.1}
-            size_hint: 0.3, 0.1
-            text: "Cancel"
-            on_release: root.cancel()
+            FileChooserListView:
+                id: filechooser
+                size_hint: 1, 1
+                on_selection: root.load(filechooser.path, filechooser.selection)
+
+        BoxLayout:
+            size_hint: 1, 0.1
+
+        BoxLayout:
+            size_hint: 1, 0.1
+
+            Label:
+                text: ""
+
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Label:
+                text: ""
+
+        BoxLayout:
+            size_hint: 1, 0.1
 
 <MassDialog>:
 
@@ -138,7 +173,6 @@
     set_mass: set_mass
     set_volume: set_volume
     concentration: concentration
-    cancel: cancel
 
     GridLayout:
         cols: 2
@@ -189,15 +223,18 @@
             text: concentration.text
 
         Button:
-            id: cancel
-            size_hint: root.width / 8, root.height / 20
+            size_hint: root.width / 4, root.height / 20
             text: "BACK"
             on_release: root.cancel()
 
         Button:
-            size_hint: root.width / 8, root.height / 20
+            size_hint: 200, root.height / 20
             text: "SUBMIT"
             on_release: root.submit()
+        #free space
+        Label:
+            text: ""
+            size_hint: root.width / 2, root.height / 15
 
 <IsoValueDialog>:
 
@@ -205,20 +242,42 @@
     iso: iso
     cancel: cancel
 
-    FloatLayout:
-        Label:
-            id: iso
-            pos_hint:{"left": 0.7, "top":0.75}
-            size_hint: 0.8, 0.2
-            font_size: 20
-            text: iso.text
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        pos: root.pos
 
-        Button:
-            id: cancel
-            pos_hint:{"y": 0.15, "x":0.25}
-            size_hint: 0.2, 0.05
-            text: "BACK"
-            on_release: root.cancel()
+        BoxLayout:
+            size_hint: 1, .2
+
+        BoxLayout:
+            size_hint: 1, .2
+
+            Label:
+                id: iso
+                size_hint: 0.8, 0.2
+                font_size: 20
+                text: iso.text
+
+        BoxLayout:
+            size_hint: 1, .2
+
+        BoxLayout:
+            size_hint: 1, .1
+
+            Label:
+                text: ""
+
+            Button:
+                id: cancel
+                text: "BACK"
+                on_release: root.cancel()
+
+            Label:
+                text: ""
+
+        BoxLayout:
+            size_hint: 1, .2
 
 <Amino_one>:
     name: "amino_one"

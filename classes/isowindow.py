@@ -8,6 +8,6 @@ class IsoValueDialog(FloatLayout):
     cancel = ObjectProperty(None)
     iso = ObjectProperty(None)
 
-    def __init__(self, m, **kwargs):
+    def __init__(self, iso_val, **kwargs):
         super(IsoValueDialog, self).__init__(**kwargs)
-        self.iso.text = m
+        self.iso.text = iso_val

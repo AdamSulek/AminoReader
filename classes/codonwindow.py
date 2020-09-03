@@ -242,7 +242,7 @@ class Codon(Screen):
 
            numberIter += 1
 
-        return str(pH)
+        return str(round(pH, 2))
 
     def calcIso_3(self):
         '''
@@ -310,7 +310,7 @@ class Codon(Screen):
 
            numberIter += 1
 
-        return str(pH)
+        return str(round(pH, 2))
 
     def calculate_isoValue(self):
         '''
@@ -322,7 +322,7 @@ class Codon(Screen):
                 result += self.calcIso_1()
             else:
                 result += self.calcIso_3()
-            content = Factory.IsoValueDialog(cancel=self.dismiss_popup, m=result)
+            content = Factory.IsoValueDialog(cancel=self.dismiss_popup, iso_val=result)
             self._popup = Popup(title="IsoValue information", content=content,
                                 size_hint=(0.9, 0.9))
             self._popup.open()

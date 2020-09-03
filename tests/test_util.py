@@ -1,12 +1,13 @@
 import unittest
 import os
+import sys
 from functions.util import amino_dict, str_checker, mass_dict
 
 class aminodictTest(unittest.TestCase):
 
     def setUp(self):
         self.fake_amino_dict = amino_dict(os.path.join(os.getcwd(),
-                                               "../docs/base.def"))
+                                               "docs/base.def"))
 
     def test_Instance(self):
         self.assertIsInstance(self.fake_amino_dict, dict)
@@ -40,7 +41,7 @@ class massdictTest(unittest.TestCase):
 
     def setUp(self):
         self.fake_mass_dict = mass_dict(os.path.join(os.getcwd(),
-                                         "../docs/baseMass.def"))
+                                         "docs/baseMass.def"))
 
     def test_Instance(self):
         self.assertIsInstance(self.fake_mass_dict, dict)

@@ -135,7 +135,7 @@ class Amino_one(Screen):
 
            numberIter += 1
 
-        return str(pH)
+        return str(round(pH, 2))
 
     def calculate_isoValue(self):
         '''
@@ -144,7 +144,7 @@ class Amino_one(Screen):
         if self.sequence.text != "":
             result = "Isoelectric Point (pH) is: "
             result += self.calcIso()
-            content = Factory.IsoValueDialog(cancel=self.dismiss_popup, m=result)
+            content = Factory.IsoValueDialog(cancel=self.dismiss_popup, iso_val=result)
             self._popup = Popup(title="IsoValue information", content=content,
                                                               size_hint=(1, 1))
             self._popup.open()
@@ -226,7 +226,7 @@ class Amino_three(Amino_one):
 
            numberIter += 1
 
-        return str(pH)
+        return str(round(pH, 2))
 
     def calcMass(self):
         '''

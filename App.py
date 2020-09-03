@@ -1,6 +1,7 @@
+import os
+import sys
 from kivy.app import App
 from kivy.lang import Builder
-
 from classes.aminowindow import Amino_one, Amino_three
 from classes.codonwindow import Codon
 from classes.isowindow import IsoValueDialog
