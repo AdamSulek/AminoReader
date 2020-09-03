@@ -1,4 +1,5 @@
 import os
+import re
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
@@ -54,6 +55,13 @@ class Codon(Screen):
             This function delete non-coding fragment from sequence
             e.g. white signs, numbers, non-coding character.
         '''
+        pattern = '(AAA | GCT | GCC | GCA | GCG | CGT | CGC | CGA | CGG | AGA | \
+        AGG | AAT | AAC | GAT | GAC | TGT | TGC | CAA | CAG | GAA | GAG | GAA | \
+        GAG | GGT | GGC | GGA | GGG | CAT | CAC | ATT | ATC | ATA | CTT | CTC | \
+        CTA | CTG | TTA | TTG | AAG | ATG | TTT | TTC | CCT | CCC | CCA | CCG | \
+        TCT | TCC | TCA | TCG | AGT | AGC | ACT | ACC | ACA | ACG | TGG | TAT | \
+        TAC | GTT | GTC | GTA | GTG)'
+
         self.result = ""
         codon = ""
         for letter in seq:
