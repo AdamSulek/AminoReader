@@ -50,46 +50,22 @@ class Codon(Screen):
         self._popup = Popup(title="Load file", content=content, size_hint=(1, 1))
         self._popup.open()
 
-    # def cutter(self, seq):
-    #     '''
-    #         This function delete non-coding fragment from sequence
-    #         e.g. white signs, numbers, non-coding character.
-    #     '''
-    #     pattern = '(AAA | GCT | GCC | GCA | GCG | CGT | CGC | CGA | CGG | AGA | \
-    #     AGG | AAT | AAC | GAT | GAC | TGT | TGC | CAA | CAG | GAA | GAG | GAA | \
-    #     GAG | GGT | GGC | GGA | GGG | CAT | CAC | ATT | ATC | ATA | CTT | CTC | \
-    #     CTA | CTG | TTA | TTG | AAG | ATG | TTT | TTC | CCT | CCC | CCA | CCG | \
-    #     TCT | TCC | TCA | TCG | AGT | AGC | ACT | ACC | ACA | ACG | TGG | TAT | \
-    #     TAC | GTT | GTC | GTA | GTG)'
-    #
-    #     self.result = ""
-    #     codon = ""
-    #     for letter in seq:
-    #         codon += letter
-    #         if len(codon) == 3:
-    #             for letter in combination:
-    #                 if codon == letter:
-    #                     self.result += codon
-    #             codon = ""
-    #     return self.result
-
     def load(self, path, filename):
         '''
-            This function load sequence from file.
+            This function load sequence from file, deleting non-coding fragment
+            from sequence e.g. white signs, numbers, non-coding character.
         '''
-        pattern = '(AAA|GCT|GCC|GCA|GCG|CGT|CGC|CGA|CGG|AGA|TAC|GTT|GTC| \
-                    AGG|AAT|AAC|GAT|GAC|TGT|TGC|CAA|CAG|GAA|GAG|GAA|GTA| \
-                    GAG|GGT|GGC|GGA|GGG|CAT|CAC|ATT|ATC|ATA|CTT|CTC|GTG| \
-                    CTA|CTG|TTA|TTG|AAG|ATG|TTT|TTC|CCT|CCC|CCA|CCG| \
-                    TCT|TCC|TCA|TCG|AGT|AGC|ACT|ACC|ACA|ACG|TGG|TAT)'
+        #{3,10} means 3 to 10 repetition from 'A','C','T','G' character set
+        #allows to ommited expression like: 'C:/' or 'GCsequence'
+        pattern = '[ACTG]{3,10}'
         self.sequence.text = ""
         result = ""
         with open(os.path.join(path, filename[0])) as stream:
-            for line in stream.readlines():
-                for word in line.split():
-                    if re.match(pattern, word):
-                        result += word
-            # self.row = stream.read()
+            full_text = stream.read()
+            for word in full_text.split():
+                if re.match(pattern, word):
+                    result += word
+
             self.codon_input.text = result
 
             if self.switch_one.active:
@@ -105,7 +81,6 @@ class Codon(Screen):
             This text will be displayed in the text window in Welcome class.
         '''
         codon = ""
-        count = 0
         for char in range(len(self.codon_input.text)):
             codon += self.codon_input.text[char]
             if len(codon) == 3:
@@ -115,9 +90,7 @@ class Codon(Screen):
                         if three == codon:
                             self.sequence.text += acronyms(os.path.join(
                                                   os.getcwd(), "docs/three.def"))[amino]
-                            count += 1
                 codon = ""
-                print("jetsem w klasie codonwindow funckja amino_creator_1, count: {} ".format(count))
 
     def amino_creator_3(self):
         '''

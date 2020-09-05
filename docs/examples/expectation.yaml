@@ -1,6 +1,6 @@
 aminoacid_one_character.txt:
-    mass: 199034.72
-    iso: 8.57
+    mass: 238961.2
+    iso: 11.15
 
 aminoacid_three_character.txt:
     mass: 1257.62
@@ -8,4 +8,4 @@ aminoacid_three_character.txt:
 
 codon_notation.txt:
     mass: 4041.9
-    iso: 9.36 
+    iso: 9.36
