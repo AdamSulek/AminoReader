@@ -59,18 +59,18 @@ class Codon(Screen):
         #allows to ommited expression like: 'C:/' or 'GCsequence'
         pattern = '[ACTG]{3,10}'
         # self.sequence = ""
-        # result = ""
+        result = ""
         self.codon_input = ""
         with open(os.path.join(path, filename[0])) as stream:
             full_text = stream.read()
             for word in full_text.split():
                 if re.match(pattern, word):
-                    # result += word
-                    self.codon_input += word
+                    result += word
+                    # self.codon_input += word
             #instead of using result direct self.codon assigned
-            # print("uwagaa jestem w load a result wynosi: {}".format(result))
-            print("uwagaa jestem w load a result wynosi: {}".format(self.codon_input))
-            # self.codon_input = result
+            print("uwagaa jestem w load a result wynosi: {}".format(result))
+            # print("uwagaa jestem w load a result wynosi: {}".format(self.codon_input))
+            self.codon_input = result
 
             if self.switch_one.active:
                 self.amino_creator_1()
