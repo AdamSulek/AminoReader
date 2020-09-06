@@ -74,8 +74,8 @@
 <Codon>:
     name: "codon"
 
-    codon_input: codon_input
-    sequence: sequence
+    # codon_input: codon_input
+    # sequence: sequence
     switch_one: switch_one
 
     BoxLayout:
@@ -88,8 +88,10 @@
             Button:
                 text: 'Back'
                 on_release:
-                    codon_input.text = ""
-                    sequence.text = ""
+                    # codon_input.text = ""
+                    # sequence.text = ""
+                    codon_input = ""
+                    sequence = ""
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
 
@@ -128,10 +130,12 @@
         BoxLayout:
             TextInput:
                 id: codon_input
-                text: ''
+                # text: ''
+                text: root.codon_input
             RstDocument:
                 id: sequence
-                text: sequence.text
+                # text: sequence.text
+                text: root.sequence
                 show_errors: True
 
 <LoadDialog>:

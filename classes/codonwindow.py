@@ -1,7 +1,7 @@
 import os
 import re
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 from kivy.factory import Factory
 from functions.util import amino_dict, acronyms, mass_dict
@@ -32,8 +32,8 @@ class Codon(Screen):
             codon_input - store the sequence of codons
             sequence - store the sequence of aminoacids
     '''
-    codon_input = ObjectProperty(None)
-    sequence = ObjectProperty(None)
+    codon_input = StringProperty(defaultvalue='')
+    sequence = StringProperty(defaultvalue='')
     switch_one = ObjectProperty(None)
 
     def dismiss_popup(self):
@@ -58,15 +58,19 @@ class Codon(Screen):
         #{3,10} means 3 to 10 repetition from 'A','C','T','G' character set
         #allows to ommited expression like: 'C:/' or 'GCsequence'
         pattern = '[ACTG]{3,10}'
-        self.sequence.text = ""
-        result = ""
+        # self.sequence = ""
+        # result = ""
+        self.codon_input = ""
         with open(os.path.join(path, filename[0])) as stream:
             full_text = stream.read()
             for word in full_text.split():
                 if re.match(pattern, word):
-                    result += word
-
-            self.codon_input.text = result
+                    # result += word
+                    self.codon_input += word
+            #instead of using result direct self.codon assigned
+            # print("uwagaa jestem w load a result wynosi: {}".format(result))
+            print("uwagaa jestem w load a result wynosi: {}".format(self.codon_input))
+            # self.codon_input = result
 
             if self.switch_one.active:
                 self.amino_creator_1()
@@ -81,16 +85,18 @@ class Codon(Screen):
             This text will be displayed in the text window in Welcome class.
         '''
         codon = ""
-        for char in range(len(self.codon_input.text)):
-            codon += self.codon_input.text[char]
+        for char in range(len(self.codon_input)):
+            codon += self.codon_input[char]
             if len(codon) == 3:
                 for amino, nucleo in amino_dict(os.path.join(os.getcwd(),
                                                 "docs/base.def")).items():
                     for three in nucleo:
                         if three == codon:
-                            self.sequence.text += acronyms(os.path.join(
-                                                  os.getcwd(), "docs/three.def"))[amino]
+                            self.sequence += acronyms(os.path.join(
+                                          os.getcwd(), "docs/three.def"))[amino]
+                            # print("jestem w amino_1 i ")
                 codon = ""
+        print("jestem w amino_1 i self.sequence wynosi: {}".format(self.sequence))
 
     def amino_creator_3(self):
         '''
@@ -99,14 +105,14 @@ class Codon(Screen):
             This text will be displayed in the text window in Welcome class.
         '''
         codon = ""
-        for char in range(len(self.codon_input.text)):
-            codon += self.codon_input.text[char]
+        for char in range(len(self.codon_input)):
+            codon += self.codon_input[char]
             if len(codon) == 3:
                 for amino, nucleo in amino_dict(os.path.join(os.getcwd(),
                                                 "docs/base.def")).items():
                     for three in nucleo:
                         if three == codon:
-                            self.sequence.text += amino
+                            self.sequence += amino
                 codon = ""
 
     def switch(self, instance, value):
@@ -114,8 +120,8 @@ class Codon(Screen):
             This function change the value (True/False) if you press
             "on/off" button.
         '''
-        self.sequence.text = ""
-        if self.codon_input.text != "":
+        self.sequence = ""
+        if self.codon_input != "":
             if value:
                 self.amino_creator_1()
             else:
@@ -129,7 +135,7 @@ class Codon(Screen):
             aminoacid notation.
         '''
         result = 0
-        for char in self.sequence.text:
+        for char in self.sequence:
             for amino, letter in acronyms(os.path.join(os.getcwd(),
                                 "docs/three.def")).items():
                 for sign in letter:
@@ -148,8 +154,8 @@ class Codon(Screen):
         '''
         result = 0
         codon = ""
-        for letter in range(len(self.sequence.text)):
-            codon += self.sequence.text[letter]
+        for letter in range(len(self.sequence)):
+            codon += self.sequence[letter]
             if letter % 3 == 2:
                 for three, mass in mass_dict(os.path.join(os.getcwd(),
                                              "docs/baseMass.def")).items():
@@ -162,7 +168,7 @@ class Codon(Screen):
         '''
             This function trigger Mass Dialog window.
         '''
-        if self.codon_input.text != "":
+        if self.codon_input != "":
             if self.switch_one.active:
                 result = str(self.calcMass_1())
             else:
@@ -184,7 +190,7 @@ class Codon(Screen):
         QN1, QN2, QN3, QN4, QN5, QP1, QP2, QP3, QP4, NQ \
                = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-        for amino in self.sequence.text:
+        for amino in self.sequence:
 
             if amino == 'D':
                 AspNumber += 1
@@ -249,8 +255,8 @@ class Codon(Screen):
                = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         codon = ""
-        for amino in range(len(self.sequence.text)):
-            codon += self.sequence.text[amino]
+        for amino in range(len(self.sequence)):
+            codon += self.sequence[amino]
             if len(codon) == 3:
                 if codon == "Asp":
                     AspNumber += 1
@@ -310,7 +316,7 @@ class Codon(Screen):
         '''
             This function trigger IsoValue Dialog window.
         '''
-        if self.codon_input.text != "":
+        if self.codon_input != "":
             result = "Isoelectric Point (pH) is: "
             if self.switch_one.active:
                 result += self.calcIso_1()
