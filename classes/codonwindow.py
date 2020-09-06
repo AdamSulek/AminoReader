@@ -1,4 +1,5 @@
 import os
+import re
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
@@ -49,30 +50,23 @@ class Codon(Screen):
         self._popup = Popup(title="Load file", content=content, size_hint=(1, 1))
         self._popup.open()
 
-    def cutter(self, seq):
-        '''
-            This function delete non-coding fragment from sequence
-            e.g. white signs, numbers, non-coding character.
-        '''
-        self.result = ""
-        codon = ""
-        for letter in seq:
-            codon += letter
-            if len(codon) == 3:
-                for letter in combination:
-                    if codon == letter:
-                        self.result += codon
-                codon = ""
-        return self.result
-
     def load(self, path, filename):
         '''
-            This function load sequence from file.
+            This function load sequence from file, deleting non-coding fragment
+            from sequence e.g. white signs, numbers, non-coding character.
         '''
+        #{3,10} means 3 to 10 repetition from 'A','C','T','G' character set
+        #allows to ommited expression like: 'C:/' or 'GCsequence'
+        pattern = '[ACTG]{3,10}'
         self.sequence.text = ""
+        result = ""
         with open(os.path.join(path, filename[0])) as stream:
-            self.row = stream.read()
-            self.codon_input.text = self.cutter(self.row)
+            full_text = stream.read()
+            for word in full_text.split():
+                if re.match(pattern, word):
+                    result += word
+
+            self.codon_input.text = result
 
             if self.switch_one.active:
                 self.amino_creator_1()
