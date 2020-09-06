@@ -20,8 +20,17 @@ class CodonTest(unittest.TestCase):
         self.adres.append(self.test_file)
 
     @mock.patch("classes.codonwindow.Codon.switch_one")
-    def test_Codon_load_ok_1(self, mock_switch):
+    @mock.patch("classes.codonwindow.Codon.dismiss_popup")
+    def test_Codon_load_1_ok(self, mock_switch, mock_dismiss):
         mock_switch = 1
+        mock_dismiss = self.mock_empty()
+        self.codon.load(self.test_dir.name, self.adres)
+
+    @mock.patch("classes.codonwindow.Codon.switch_one")
+    @mock.patch("classes.codonwindow.Codon.dismiss_popup")
+    def test_Codon_load_3_ok(self, mock_switch, mock_dismiss):
+        mock_switch = 0
+        mock_dismiss = self.mock_empty()
         self.codon.load(self.test_dir.name, self.adres)
 
 if __name__ == '__main__':
