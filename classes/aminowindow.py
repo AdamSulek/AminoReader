@@ -43,6 +43,8 @@ class Amino_one(Screen):
             self.sequence.text = stream.read()
             self.dismiss_popup()
 
+        print("jestem w Amino_onne load, self.sequence: {}".format(self.sequence.text))
+
     def calcMass(self):
         '''
             This function calculate mass from one character aminoacid sequence
