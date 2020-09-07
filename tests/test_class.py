@@ -3,7 +3,29 @@ import os
 import sys
 import unittest.mock as mock
 import tempfile
+from classes.aminowindow import Amino_one
 from classes.codonwindow import Codon
+
+class Amino_oneTest(unittest.TestCase):
+
+    def mock_empty(self):
+        pass
+
+    def setUp(self):
+        self.amino_one = Amino_one()
+        self.test_dir = tempfile.TemporaryDirectory(prefix='temp_dir')
+        self.test_file = os.path.join(self.test_dir.name, 'test_file')
+        with open(self.test_file, 'w') as test_file:
+            test_file.write("ARN")
+        self.adres = []
+        self.adres.append(self.test_file)
+
+    @mock.patch("classes.aminowindow.Amino_one.sequence")
+    @mock.patch("classes.aminowindow.Amino_one.dismiss_popup")
+    def test_calcMass(self, mock_popup, mock_seq):
+        mock_popup = self.mock_empty()
+        mock_seq = "ARN"
+        self.amino_one.load(self.test_dir.name, self.adres)
 
 class CodonTest(unittest.TestCase):
 
@@ -19,8 +41,14 @@ class CodonTest(unittest.TestCase):
         self.adres = []
         self.adres.append(self.test_file)
 
+    @mock.patch("classes.codonwindow.Codon.codon_input")
+    @mock.patch("classes.codonwindow.Codon.sequence")
     @mock.patch("classes.codonwindow.Codon.switch_one")
-    def test_Codon_load_ok_1(self, mock_switch):
+    @mock.patch("classes.codonwindow.Codon.dismiss_popup")
+    def test_Codon_load_ok_1(self, mock_popup, mock_switch, mock_seq, mock_codon_input):
+        mock_popup = self.mock_empty()
+        mock_codon_input = "GCTCGTAAT"
+        mock_seq = "ARN"
         mock_switch = 1
         self.codon.load(self.test_dir.name, self.adres)
 
