@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 from kivy.factory import Factory
 from functions.util import amino_dict, acronyms, mass_dict
+from functions.popup import invalidLoad
 
 nucleotides = ['A', 'C', 'T', 'G']
 combination = []
@@ -58,7 +59,6 @@ class Codon(Screen):
         #{3,10} means 3 to 10 repetition from 'A','C','T','G' character set
         #allows to ommited expression like: 'C:/' or 'GCsequence'
         pattern = '[ACTG]{3,10}'
-        # self.sequence = ""
         result = ""
         self.codon_input = ""
         with open(os.path.join(path, filename[0])) as stream:
@@ -66,23 +66,25 @@ class Codon(Screen):
             for word in full_text.split():
                 if re.match(pattern, word):
                     result += word
-                    # self.codon_input += word
-            #instead of using result direct self.codon assigned
-            print("uwagaa jestem w load a result wynosi: {}".format(result))
-            # print("uwagaa jestem w load a result wynosi: {}".format(self.codon_input))
             self.codon_input = result
 
             if self.switch_one.active:
                 self.amino_creator_1()
             else:
                 self.amino_creator_3()
-            self.dismiss_popup()
+
+        if not self.codon_input:
+            invalidLoad()
+
+        self.dismiss_popup()
 
     def amino_creator_1(self):
         '''
             This function assigns the text from file (one character aminoacid
             notation) to ObjectProperty variable.
             This text will be displayed in the text window in Welcome class.
+            If codon input sequence is not divided to 3 the last one or two
+            nucleotides will not taken into account.
         '''
         codon = ""
         for char in range(len(self.codon_input)):
@@ -94,15 +96,15 @@ class Codon(Screen):
                         if three == codon:
                             self.sequence += acronyms(os.path.join(
                                           os.getcwd(), "docs/three.def"))[amino]
-                            # print("jestem w amino_1 i ")
                 codon = ""
-        print("jestem w amino_1 i self.sequence wynosi: {}".format(self.sequence))
 
     def amino_creator_3(self):
         '''
             This function assigns the text from file (three character aminoacid
             notation) to ObjectProperty variable.
             This text will be displayed in the text window in Welcome class.
+            If codon input sequence is not divided to 3 the last one or two
+            nucleotides will not taken into account.
         '''
         codon = ""
         for char in range(len(self.codon_input)):
@@ -135,7 +137,9 @@ class Codon(Screen):
             aminoacid notation.
         '''
         result = 0
+        print("jestem w calcMass_1 self.sequence: {}".format(self.sequence))
         for char in self.sequence:
+            # print("chociaz wszedlem")
             for amino, letter in acronyms(os.path.join(os.getcwd(),
                                 "docs/three.def")).items():
                 for sign in letter:
