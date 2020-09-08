@@ -165,6 +165,23 @@ class Amino_three(Amino_one):
     '''
     sequence = StringProperty(defaultvalue='')
 
+    def calcMass(self):
+        '''
+            This function calculate mass from three character aminoacids
+            sequence notation.
+        '''
+        result = 0
+        codon = ""
+        for char in range(len(self.sequence)):
+            codon += self.sequence[char]
+            if char % 3 == 2:
+                for three, mass in mass_dict(os.path.join(os.getcwd(),
+                                            "docs/baseMass.def")).items():
+                    if three == codon:
+                        result += mass
+                codon = ""
+        return round(result, 2)
+
     def calcIso(self):
         '''
             This function calculate Isovalue Point (three character notation).
@@ -231,20 +248,3 @@ class Amino_three(Amino_one):
            numberIter += 1
 
         return str(round(pH, 2))
-
-    def calcMass(self):
-        '''
-            This function calculate mass from three character aminoacids
-            sequence notation.
-        '''
-        result = 0
-        codon = ""
-        for char in range(len(self.sequence)):
-            codon += self.sequence[char]
-            if char % 3 == 2:
-                for three, mass in mass_dict(os.path.join(os.getcwd(),
-                                            "docs/baseMass.def")).items():
-                    if three == codon:
-                        result += mass
-                codon = ""
-        return round(result, 2)

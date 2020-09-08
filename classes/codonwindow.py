@@ -35,7 +35,8 @@ class Codon(Screen):
     '''
     codon_input = StringProperty(defaultvalue='')
     sequence = StringProperty(defaultvalue='')
-    switch_one = ObjectProperty(None)
+    switch_one = ObjectProperty(defaultvalue=True)
+    # switch_one = ObjectProperty(None)
 
     def dismiss_popup(self):
         '''
@@ -68,7 +69,8 @@ class Codon(Screen):
                     result += word
             self.codon_input = result
 
-            if self.switch_one.active:
+            # if self.switch_one.active:
+            if self.switch_one:
                 self.amino_creator_1()
             else:
                 self.amino_creator_3()
@@ -87,6 +89,7 @@ class Codon(Screen):
             nucleotides will not taken into account.
         '''
         codon = ""
+        # print(len(self.codon_input))
         for char in range(len(self.codon_input)):
             codon += self.codon_input[char]
             if len(codon) == 3:
@@ -96,7 +99,9 @@ class Codon(Screen):
                         if three == codon:
                             self.sequence += acronyms(os.path.join(
                                           os.getcwd(), "docs/three.def"))[amino]
+                            # print("codon: {}".format(codon))
                 codon = ""
+        print("uruchomiono amino_cre_one self.sequence: {}".format(self.sequence))
 
     def amino_creator_3(self):
         '''
@@ -116,6 +121,7 @@ class Codon(Screen):
                         if three == codon:
                             self.sequence += amino
                 codon = ""
+        print("uruchomiono amino_cre_three self.sequence: {}".format(self.sequence))
 
     def switch(self, instance, value):
         '''
@@ -137,9 +143,7 @@ class Codon(Screen):
             aminoacid notation.
         '''
         result = 0
-        print("jestem w calcMass_1 self.sequence: {}".format(self.sequence))
         for char in self.sequence:
-            # print("chociaz wszedlem")
             for amino, letter in acronyms(os.path.join(os.getcwd(),
                                 "docs/three.def")).items():
                 for sign in letter:
