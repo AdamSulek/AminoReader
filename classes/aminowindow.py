@@ -1,6 +1,6 @@
 import os
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 from kivy.factory import Factory
 from functions.util import acronyms, mass_dict
@@ -18,7 +18,7 @@ class Amino_one(Screen):
         Contains one object that store text variables:
             sequence
     '''
-    sequence = ObjectProperty(None)
+    sequence = StringProperty(defaultvalue='')
 
     def dismiss_popup(self):
         '''
@@ -40,10 +40,11 @@ class Amino_one(Screen):
             This function load sequence from file.
         '''
         with open(os.path.join(path, filename[0])) as stream:
-            self.sequence.text = stream.read()
-            self.dismiss_popup()
+            self.sequence = stream.read()
 
-        print("jestem w Amino_onne load, self.sequence: {}".format(self.sequence.text))
+        if not self.sequence:
+            invalidLoad()
+        self.dismiss_popup()
 
     def calcMass(self):
         '''
@@ -51,7 +52,7 @@ class Amino_one(Screen):
             notation.
         '''
         result = 0
-        for char in self.sequence.text:
+        for char in self.sequence:
             for amino, letter in acronyms(os.path.join(os.getcwd(),
                                           "docs/three.def")).items():
                 for sign in letter:
@@ -67,7 +68,7 @@ class Amino_one(Screen):
         '''
             This function trigger Mass Dialog window.
         '''
-        if self.sequence.text != "":
+        if self.sequence != "":
             result = str(self.calcMass())
             content = Factory.MassDialog(cancel=self.dismiss_popup, m=result)
             self._popup = Popup(title="Mass information", content=content,
@@ -85,7 +86,7 @@ class Amino_one(Screen):
         QN1, QN2, QN3, QN4, QN5, QP1, QP2, QP3, QP4, NQ \
                = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-        for amino in self.sequence.text:
+        for amino in self.sequence:
 
             if amino == 'D':
                 AspNumber += 1
@@ -143,7 +144,7 @@ class Amino_one(Screen):
         '''
             This function trigger IsoValue Dialog window.
         '''
-        if self.sequence.text != "":
+        if self.sequence != "":
             result = "Isoelectric Point (pH) is: "
             result += self.calcIso()
             content = Factory.IsoValueDialog(cancel=self.dismiss_popup, iso_val=result)
@@ -161,7 +162,24 @@ class Amino_three(Amino_one):
         The only different is in class method: calcIso and calcMass.
         Overloaded method use different iteration through aminoacids sequence.
     '''
-    sequence = ObjectProperty(None)
+    sequence = StringProperty(defaultvalue='')
+
+    def calcMass(self):
+        '''
+            This function calculate mass from three character aminoacids
+            sequence notation.
+        '''
+        result = 0
+        codon = ""
+        for char in range(len(self.sequence)):
+            codon += self.sequence[char]
+            if char % 3 == 2:
+                for three, mass in mass_dict(os.path.join(os.getcwd(),
+                                            "docs/baseMass.def")).items():
+                    if three == codon:
+                        result += mass
+                codon = ""
+        return round(result, 2)
 
     def calcIso(self):
         '''
@@ -173,8 +191,8 @@ class Amino_three(Amino_one):
                = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         codon = ""
-        for amino in range(len(self.sequence.text)):
-            codon += self.sequence.text[amino]
+        for amino in range(len(self.sequence)):
+            codon += self.sequence[amino]
             if len(codon) == 3:
                 if codon == "Asp":
                     AspNumber += 1
@@ -229,20 +247,3 @@ class Amino_three(Amino_one):
            numberIter += 1
 
         return str(round(pH, 2))
-
-    def calcMass(self):
-        '''
-            This function calculate mass from three character aminoacids
-            sequence notation.
-        '''
-        result = 0
-        codon = ""
-        for char in range(len(self.sequence.text)):
-            codon += self.sequence.text[char]
-            if char % 3 == 2:
-                for three, mass in mass_dict(os.path.join(os.getcwd(),
-                                            "docs/baseMass.def")).items():
-                    if three == codon:
-                        result += mass
-                codon = ""
-        return round(result, 2)

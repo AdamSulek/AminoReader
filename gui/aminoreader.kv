@@ -74,8 +74,6 @@
 <Codon>:
     name: "codon"
 
-    codon_input: codon_input
-    sequence: sequence
     switch_one: switch_one
 
     BoxLayout:
@@ -88,8 +86,6 @@
             Button:
                 text: 'Back'
                 on_release:
-                    codon_input.text = ""
-                    sequence.text = ""
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
 
@@ -127,12 +123,77 @@
 
         BoxLayout:
             TextInput:
-                id: codon_input
-                text: ''
+                text: root.codon_input
+
             RstDocument:
-                id: sequence
-                text: sequence.text
+                text: root.sequence
                 show_errors: True
+
+<Amino_one>:
+
+    name: "amino_one"
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: 'Back'
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text: 'Load'
+                on_release: root.show_load()
+
+            Button:
+                text: "calculate mass"
+                on_release: root.calculate_mass()
+
+            Button:
+                text: "calculate isoValue"
+                on_release: root.calculate_isoValue()
+
+        BoxLayout:
+            TextInput:
+                text: root.sequence
+
+<Amino_three@Screen>:
+
+    name: "amino_three"
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: 'Back'
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text: 'Load'
+                on_release: root.show_load()
+
+            Button:
+                text: "calculate mass"
+                on_release: root.calculate_mass()
+
+            Button:
+                text: "calculate isoValue"
+                on_release: root.calculate_isoValue()
+
+        BoxLayout:
+            TextInput:
+                text: root.sequence
 
 <LoadDialog>:
 
@@ -278,76 +339,3 @@
 
         BoxLayout:
             size_hint: 1, .2
-
-<Amino_one>:
-    name: "amino_one"
-
-    sequence: sequence
-
-    BoxLayout:
-        orientation: 'vertical'
-
-        BoxLayout:
-            size_hint_y: None
-            height: 30
-
-            Button:
-                text: 'Back'
-                on_release:
-                    sequence.text = ""
-                    app.root.current = "main"
-                    root.manager.transition.direction = "right"
-
-            Button:
-                text: 'Load'
-                on_release: root.show_load()
-
-            Button:
-                text: "calculate mass"
-                on_release: root.calculate_mass()
-
-            Button:
-                text: "calculate isoValue"
-                on_release: root.calculate_isoValue()
-
-        BoxLayout:
-            TextInput:
-                id: sequence
-                text: ''
-
-<Amino_three@Screen>:
-
-    name: "amino_three"
-
-    sequence: sequence
-
-    BoxLayout:
-        orientation: 'vertical'
-
-        BoxLayout:
-            size_hint_y: None
-            height: 30
-
-            Button:
-                text: 'Back'
-                on_release:
-                    sequence.text = ""
-                    app.root.current = "main"
-                    root.manager.transition.direction = "right"
-
-            Button:
-                text: 'Load'
-                on_release: root.show_load()
-
-            Button:
-                text: "calculate mass"
-                on_release: root.calculate_mass()
-
-            Button:
-                text: "calculate isoValue"
-                on_release: root.calculate_isoValue()
-
-        BoxLayout:
-            TextInput:
-                id: sequence
-                text: ''
