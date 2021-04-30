@@ -34,6 +34,6 @@ Choosing:
 - "From Aminoacid" button, than Load btn and choose from Aminoreader downloaded folder /docs/examples/aminoacid_three_character_one.txt
 
 #### Screens from the program
-![](images/aminoreader.tif)
+![screenshot](images/aminoreader.png)
 
 ### Run the tests
