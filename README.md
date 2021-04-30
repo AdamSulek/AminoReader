@@ -35,5 +35,3 @@ Choosing:
 
 #### Screens from the program
 ![screenshot](images/aminoreader.png)
-
-### Run the tests
